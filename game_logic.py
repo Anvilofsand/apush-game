@@ -59,7 +59,7 @@ while True:
     chat_session = model.start_chat()
     user_input = input ("message:")
     message = history + "| end of context. User message:  " + user_input
-    response = model.generate_content(message)
+    response = chat_session.send_message(user_input)
     message = history + "\n" + user_input
     history = message + "\n" + str(response.text)
     print(response.text)
