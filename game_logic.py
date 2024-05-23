@@ -56,15 +56,11 @@ model = genai.GenerativeModel(
 )
 history=" "
 while True:
-    chat_session = model.start_chat(
-
-    )
+    chat_session = model.start_chat()
     user_input = input ("message:")
     message = history + "| end of context. User message:  " + user_input
-    response = chat_session.send_message(message)
-    history = message + "                 " + str(response)
-    def to_markdown(text):
-        text = text.replace('•', '  *')
-        return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-        print(text)
-        print(chat_session.history)
+    response = model.generate_content(message)
+    message = history + "\n" + user_input
+    history = message + "\n" + str(response.text)
+    print(response.text)
+    #print(chat_session.history)
