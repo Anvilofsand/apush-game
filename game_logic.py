@@ -10,22 +10,21 @@ model = ''
 error = False
 user_input =''
 while True:
-    if error==True: 
-        model = 'gemini-1.0-pro-latest'
-        user_input = ''
+    genai.configure(api_key=key) 
+    if error==True: model = 'gemini-1.0-pro-latest'
     if error == False: 
         user_input = input ("input: ")
         model = 'gemini-1.5-flash-latest'
     print ("model:", model ,"\n _______________________")
     try:
-        genai.configure(api_key=key)
+        if model == 'gemini-1.0-pro-latest': total_input = user_input
+        if model == 'gemini-1.5-flash-latest': total_input = context + "\n" + user_input
         model = genai.GenerativeModel(model)
-        if model == 'gemini-1.5-flash-latest': total_input = context +"\n" + user_input
-        if model == 'gemini-1.0-pro-latest': total_input = ' '
         response = model.generate_content(total_input)
         print(response.text)
-        promptnum +=1
-        context = context + "\n \n \n \n" + user_input + "\n" + response.text + "\n"
+        if model == 'gemini-1.5-flash-latest': context = context + "\n" + response.text + "\n"
+        if model == 'gemini-1.0-pro-latest': context = context
+        #file_number +=1
         error = False
     except: 
         error=True
