@@ -16,16 +16,18 @@ while True:
     genai.configure(api_key=key) 
     if error==True: 
         model = 'gemini-1.0-pro-latest'
-        error_input = ''
+        error_input = ' '
     if error == False: 
         user_input = input ("input: ")
         model = 'gemini-1.5-flash-latest'
-    print ("model:", model ,"\n _______________________")
+    #print ("model:", model ,"\n _______________________")
     try:
         if model == 'gemini-1.0-pro-latest': total_input = error_input
         if model == 'gemini-1.5-flash-latest': total_input = context + "\n" + user_input
         model = genai.GenerativeModel(model)
         response = model.generate_content(total_input)
+        error = False
+        
         print(response.text)
         if model == 'gemini-1.5-flash-latest': context = context + "\n" + response.text + "\n"
             
